@@ -29,12 +29,40 @@ class Ball {
 
 
 };
+class Paddle{
+    public:
+    float x,y;
+    float width,height;
+    int speed;
+
+    void Draw(){
+        DrawRectangle(x,y, width, height, WHITE);
+
+    }
+    void Update(){
+        if(y<=0){
+            y=0;
+        }
+        if(y>=GetScreenHeight()-height){
+            y= GetScreenHeight()-height;
+        }
+        if(IsKeyDown(KEY_UP)){
+            y -= speed;
+
+        }
+        if(IsKeyDown(KEY_DOWN)){
+            y+=speed;
+        }
+    }
+
+};
 Ball ball;
+Paddle player;
 
 int main(){
     cout<<"Starting the game"<< endl;
-    const int screen_width=1280;
-    const int screen_height= 800;
+    const float screen_width=1280;
+    const float screen_height= 800;
     const int bat_size= 120;
     const int padding = 10;
     const int bat_width= 25;
@@ -47,10 +75,17 @@ int main(){
     ball.speed_x=7;
     ball.speed_y=7;
 
+    player.x=padding;
+    player.y=(screen_height-bat_size)/2;
+    player.width=bat_width;
+    player.height=bat_size;
+    player.speed=6;
+
     while(WindowShouldClose()==false){
         BeginDrawing();
         // update
         ball.Update();
+        player.Update();
 
         //drawing
         ClearBackground(BLACK);
@@ -58,7 +93,8 @@ int main(){
         ball.Draw();
         
 
-        DrawRectangle(padding,(screen_height-bat_size)/2,bat_width, bat_size, WHITE);
+        // DrawRectangle(padding,(screen_height-bat_size)/2,bat_width, bat_size, WHITE);
+        player.Draw();
         DrawRectangle(screen_width-bat_width-padding,(screen_height-bat_size)/2,bat_width, bat_size, WHITE);
         DrawLine(screen_width/2,0, screen_width/2,screen_height,WHITE);
        
